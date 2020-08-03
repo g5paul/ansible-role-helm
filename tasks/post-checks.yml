@@ -12,7 +12,8 @@
       - helm_check_installed.stat.islnk
     fail_msg: helm was not installed as expected, it is likely something went wrong.
     success_msg: helm has been installed as expected.
-
+  ignore_errors: "{{ ansible_check_mode }}"
+  
 - name: Check the Helm binary version matches the expected version
   shell: >
     set -o pipefail && \
@@ -22,10 +23,12 @@
   changed_when: false
   failed_when: false
   register: helm_check_installed_version
-
+  ignore_errors: "{{ ansible_check_mode }}"
+  
 - name: Fail play if Helm is not the expected version
   assert:
     that:
       - helm_check_installed_version.stdout_lines[0] == helm_version
     fail_msg: Installed helm version is not as expected, it is likely something went wrong.
     success_msg: Installed helm version is as expected.
+  ignore_errors: "{{ ansible_check_mode }}"

@@ -14,3 +14,4 @@
     url: "{{ helm_release_baseurl }}/{{ helm_archive_path }}"
     dest: "/tmp/helm-{{ helm_version }}.tar.gz"
     mode: 0600
+  ignore_errors: "{{ ansible_check_mode }}"

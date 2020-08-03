@@ -24,7 +24,8 @@
   file:
     path: /tmp/helm
     state: directory
-
+  ignore_errors: "{{ ansible_check_mode }}"
+  
 - name: Ensure Helm archive is extracted to temporary directory
   unarchive:
     src: "/tmp/helm-{{ helm_version }}.tar.gz"
@@ -34,7 +35,8 @@
   when: not helm_check_existing.stat.exists
         or (helm_check_existing.stat.exists
             and helm_check_existing_version.stdout_lines[0] != helm_version)
-
+  ignore_errors: "{{ ansible_check_mode }}"
+  
 - name: Ensure Helm binary is copied to the installation directory
   copy:
     src: "/tmp/helm/linux-{{ helm_arch }}/helm"
@@ -44,9 +46,11 @@
   when: not helm_check_existing.stat.exists
         or (helm_check_existing.stat.exists
             and helm_check_existing_version.stdout_lines[0] != helm_version)
-
+  ignore_errors: "{{ ansible_check_mode }}"
+  
 - name: Ensure Helm package is symlinked
   file:
     src: "{{ helm_install_dir }}/helm-{{ helm_version }}"
     dest: "{{ helm_install_dir }}/helm"
     state: link
+  ignore_errors: "{{ ansible_check_mode }}"
