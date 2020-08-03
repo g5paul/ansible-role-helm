@@ -44,3 +44,4 @@
   changed_when: false
   register: helm_check_existing_version
   when: helm_check_existing.stat.exists
+  ignore_errors: "{{ ansible_check_mode }}"
